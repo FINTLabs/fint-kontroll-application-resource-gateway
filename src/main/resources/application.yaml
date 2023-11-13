@@ -1,0 +1,67 @@
+fint:
+  application-id: fint-resource-gateway
+  org-id: fintlabs.no
+  kontroll:
+    datainput: mock #fint
+  resource-gateway:
+    resources:
+      entity:
+        enabled: true
+        refresh:
+          interval-ms: 518400000
+          topic-retention-time-offset-ms: 86400000
+        pull:
+          initial-delay-ms: 5000
+          fixed-delay-ms: 900000
+        entity-pipelines:
+          - resource-reference: eiendeler.applikasjon.applikasjon
+          - resource-reference: eiendeler.applikasjon.lisens
+          - resource-reference: eiendeler.applikasjon.lisenstilgang
+          - resource-reference: eiendeler.kodeverk.brukertype
+          - resource-reference: eiendeler.kodeverk.lisensmodell
+          - resource-reference: eiendeler.kodeverk.plattform
+
+    authorization: disabled #enabled
+
+  client:
+    base-url: http://localhost:3000
+
+    #base-url: http://fint-kontroll-mock-service:3000
+    #base-url: https://beta.felleskomponent.no
+    registration-id: fint
+  kafka:
+    default-replicas: 1
+    topic:
+      org-id: ${fint.org-id}
+      domain-context: kontroll
+    application-id: ${fint.application-id}
+logging:
+  level:
+    root: INFO
+    org.apache.kafka: INFO
+
+spring:
+  security:
+    oauth2:
+      client:
+        provider:
+          fint-idp:
+            token-uri: https://idp.felleskomponent.no/nidp/oauth/nam/token
+        registration:
+          fint:
+            client-secret:
+            client-id: dummy
+            authorization-grant-type: password
+            provider: fint-idp
+            scope: fint-client
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: ${fint.application-id}
+server:
+  port: 8089
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus

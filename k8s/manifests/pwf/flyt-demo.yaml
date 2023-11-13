@@ -1,0 +1,77 @@
+apiVersion: onepassword.com/v1
+kind: OnePasswordItem
+metadata:
+  name: aiven-kafka
+spec:
+  itemPath: "vaults/aks-pwf-vault/items/aiven-kafka"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+  labels:
+    io.kompose.service: fint-resource-gateway
+  name: fint-resource-gateway
+spec:
+  ports:
+    - name: "8080"
+      port: 8080
+  type: LoadBalancer
+  selector:
+    io.kompose.service: fint-resource-gateway
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.kompose.service: fint-resource-gateway
+  name: fint-resource-gateway
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      io.kompose.service: fint-resource-gateway
+  template:
+    metadata:
+      labels:
+        io.kompose.service: fint-resource-gateway
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+        prometheus.io/path: "/actuator/prometheus"
+    spec:
+      restartPolicy: Always
+      volumes:
+        - name: credentials
+          secret:
+            secretName: aiven-kafka-certificates
+      containers:
+        - image: fintlabsacr.azurecr.io/fint-resource-gateway:dummy
+          name: fint-resource-gateway
+          volumeMounts:
+            - name: credentials
+              mountPath: /credentials
+          resources:
+            limits:
+              memory: "2048Mi"
+              cpu: "1"
+            requests:
+              memory: "1024Mi"
+              cpu: "100m"
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - secretRef:
+                name: aiven-kafka
+          env:
+            - {name: TZ, value: Europe/Oslo}
+            - {name: JAVA_TOOL_OPTIONS, value: '-XX:+ExitOnOutOfMemoryError -Xmx1840M'}
+            - {name: fint.org-id, value: 'pwf.no'}
+            - {name: fint.client.base-url, value: 'https://play-with-fint.felleskomponent.no'}
+            - {name: fint.resource-gateway.authorization.enable, value: "false"}
+            - {name: spring.security.oauth2.client.registration.fint.client-id, value: 'dummy'}
+            - {name: logging.level.no.fintlabs.arkiv, value: info}
+            - {name: logging.level.no.fintlabs.kafka, value: info}

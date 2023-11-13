@@ -1,0 +1,23 @@
+apiVersion: fintlabs.no/v1alpha1
+kind: Application
+metadata:
+  name: fint-kontroll-application.resource-gateway
+  namespace: fintlabs-no
+spec:
+  orgId: fintlabs.no
+  image: ghcr.io/fintlabs/fint-kontroll-application-resource-gateway:latest
+  imagePullPolicy: Always
+  env:
+    - name: fint.client.base-url
+      value: 'http://fint-kontroll-mock-service:3000'
+    - name: fint.kontroll.datainput
+      value: 'mock'
+    - name: fint.resource-gateway.authorization
+      value: 'disabled'
+  kafka:
+    enabled: true
+    acls:
+      - topic: 'fintlabs-no.kontroll.*'
+        permission: read
+      - topic: 'fintlabs-no.kontroll.*'
+        permission: admin

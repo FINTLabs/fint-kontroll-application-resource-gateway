@@ -1,0 +1,44 @@
+{
+  "properties": [
+    {
+      "name": "fint.org-id",
+      "type": "java.lang.String",
+      "description": "Description for fint.org-id."
+    },
+    {
+      "name": "fint.client.username",
+      "type": "java.lang.String",
+      "description": "Description for fint.client.username."
+    },
+    {
+      "name": "fint.client.password",
+      "type": "java.lang.String",
+      "description": "Description for fint.client.password."
+    },
+    {
+      "name": "fint.resource-gateway.resources.entity.pull.initial-delay-ms",
+      "type": "java.lang.Long",
+      "description": "Description for fint.resource-gateway.resources.entity.pull.initial-delay-ms."
+    },
+    {
+      "name": "fint.resource-gateway.resources.entity.pull.fixed-delay-ms",
+      "type": "java.lang.Long",
+      "description": "Description for fint.resource-gateway.resources.entity.pull.fixed-delay-ms."
+    },
+    {
+      "name": "fint.resource-gateway.resources.entity.refresh.interval-ms",
+      "type": "java.lang.Long",
+      "description": "Description for fint.resource-gateway.resources.entity.refresh.interval-ms."
+    },
+    {
+      "name": "fint.resource-gateway.resources.entity.refresh.topic-retention-time-offset-ms",
+      "type": "java.lang.Long",
+      "description": "Description for fint.resource-gateway.resources.entity.refresh.topic-retention-time-offset-ms."
+    },
+    {
+      "name": "fint.kafka.application-id",
+      "type": "java.lang.String",
+      "description": "Description for fint.kafka.application-id."
+    }
+  ]
+}
