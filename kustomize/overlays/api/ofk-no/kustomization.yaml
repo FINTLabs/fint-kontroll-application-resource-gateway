@@ -3,7 +3,6 @@ kind: Kustomization
 namespace: ofk-no
 resources:
   - ../../../base
-  - ../../../base/onepassword.yaml
 commonLabels:
   app.kubernetes.io/name: fint-kontroll-resource-gateway
   app.kubernetes.io/instance: fint-kontroll-resource-gateway_ofk-no
@@ -41,7 +40,7 @@ patches:
         value: "enabled"
     target:
       kind: Application
-      name: fint-kontroll-resource-gateway
+      name: fint-kontroll-application-resource-gateway
   - patch: |-
       - op: replace
         path: "/spec/itemPath"
