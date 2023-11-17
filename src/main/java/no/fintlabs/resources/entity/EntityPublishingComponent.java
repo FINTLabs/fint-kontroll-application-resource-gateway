@@ -61,7 +61,7 @@ public class EntityPublishingComponent {
         ));
     }
 
-    @Scheduled(fixedRateString = "#{entityConfiguration.refresh.intervalMs}")
+    //@Scheduled(fixedRateString = "#{entityConfiguration.refresh.intervalMs}")
     private void resetLastUpdatedTimestamps() {
         log.warn("Resetting resource last updated timestamps");
         this.fintClient.resetLastUpdatedTimestamps();
@@ -98,8 +98,16 @@ public class EntityPublishingComponent {
                     .map(r -> ((HashMap<String, Object>) r))
                     .collect(Collectors.toList());
         } catch (WebClientException e) {
-            log.error("Could not pull entities from endpoint=" + endpointUrl, e);
-            return Collections.emptyList();
+            try {
+                log.info("Could not pull entities from endpoint=" + endpointUrl + " first try. Give it another go");
+                return Objects.requireNonNull(fintClient.getResourcesLastUpdated(endpointUrl).block())
+                        .stream()
+                        .map(r -> ((HashMap<String, Object>) r))
+                        .collect(Collectors.toList());
+            } catch (WebClientException ex2) {
+                log.error("Could not pull entities from endpoint=" + endpointUrl, ex2);
+                return Collections.emptyList();
+            }
         }
     }
 

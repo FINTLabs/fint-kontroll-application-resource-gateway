@@ -3,8 +3,6 @@ package no.fintlabs;
 import io.netty.channel.ChannelOption;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.common.security.scram.ScramLoginModule;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -22,23 +20,21 @@ import reactor.netty.http.client.HttpClient;
 import reactor.netty.resources.ConnectionProvider;
 
 import java.time.Duration;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 
 @Getter
 @Setter
 @Configuration
-@ConditionalOnProperty(name= "fint.kontroll.datainput", havingValue = "fint")
 @ConfigurationProperties(prefix = "fint.client")
-@Slf4j
 public class OAuthWebClientConfiguration {
 
     private String baseUrl;
     private String username;
     private String password;
+    private String apiToken;
+    private String countyCode;
+    private String scope;
     private String registrationId;
 
     @Bean
@@ -47,7 +43,7 @@ public class OAuthWebClientConfiguration {
     }
 
     @Bean
-    @ConditionalOnProperty(name = "fint.resource-gateway.authorization", havingValue = "enabled")
+    @ConditionalOnProperty(name = "fint.resource-gateway.authorization.enable", havingValue = "true")
     public OAuth2AuthorizedClientManager authorizedClientManager(ClientRegistrationRepository clientRegistrationRepository,
                                                                  OAuth2AuthorizedClientService authorizedClientService) {
 
@@ -71,6 +67,7 @@ public class OAuthWebClientConfiguration {
             Map<String, Object> contextAttributes = new HashMap<>();
             contextAttributes.put(OAuth2AuthorizationContext.USERNAME_ATTRIBUTE_NAME, username);
             contextAttributes.put(OAuth2AuthorizationContext.PASSWORD_ATTRIBUTE_NAME, password);
+            contextAttributes.put(OAuth2AuthorizationContext.REQUEST_SCOPE_ATTRIBUTE_NAME, scope);
             return contextAttributes;
         };
     }
@@ -78,12 +75,18 @@ public class OAuthWebClientConfiguration {
     @Bean
     public ClientHttpConnector clientHttpConnector() {
         return new ReactorClientHttpConnector(HttpClient.create(
-                        ConnectionProvider
-                                .builder("laidback")
-                                .maxLifeTime(Duration.ofMinutes(30))
-                                .maxIdleTime(Duration.ofMinutes(5))
-                                .build())
+                        ConnectionProvider.newConnection()
+//                                .builder("laidback")
+//                                .maxLifeTime(Duration.ofMinutes(30))
+//                                //.maxIdleTime(Duration.ofMinutes(5))
+//                                .maxIdleTime(Duration.ofSeconds(10))
+//                                //.pendingAcquireTimeout(Duration.ofMinutes(5))
+//                                .build()
+                )
+                .wiretap(true)
+                .followRedirect(true)
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 300000)
+                //.option(ChannelOption.SO_KEEPALIVE, true)
                 .responseTimeout(Duration.ofMinutes(5))
         );
     }
@@ -101,12 +104,16 @@ public class OAuthWebClientConfiguration {
             builder.filter(authorizedClientExchangeFilterFunction);
         });
 
-        log.info("oAuth webclient created");
-
         return builder
                 .clientConnector(clientHttpConnector)
                 .exchangeStrategies(exchangeStrategies)
                 .baseUrl(baseUrl)
+                .defaultHeader("ApiToken", apiToken)
+                .defaultHeader("CountyCode", countyCode )
+//                .filters(exchangeFilterFunctions -> {
+//                    exchangeFilterFunctions.add(LogFilters.logRequest());
+//                    exchangeFilterFunctions.add(LogFilters.logResponse());
+//                })
                 .build();
     }
 

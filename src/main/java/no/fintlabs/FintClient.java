@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class FintClient {
+    private boolean useLastUpdated;
     private final WebClient webClient;
 
     private final Map<String, Long> sinceTimestamp = new ConcurrentHashMap<>();
@@ -21,9 +22,16 @@ public class FintClient {
     }
 
     public Mono<List<Object>> getResourcesLastUpdated(String endpoint) {
-        return getLastUpdated(endpoint)
-                .flatMapIterable(ObjectResources::getContent)
-                .collect(Collectors.toList());
+        if (useLastUpdated) {
+            return getLastUpdated(endpoint)
+                    .flatMapIterable(ObjectResources::getContent)
+                    .collect(Collectors.toList());
+        }
+        else {
+            return getAllResources(endpoint)
+                    .flatMapIterable(ObjectResources::getContent)
+                    .collect(Collectors.toList());
+        }
     }
 
     public void resetLastUpdatedTimestamps() {
@@ -41,6 +49,12 @@ public class FintClient {
                         .bodyToMono(ObjectResources.class)
                         .doOnNext(it -> sinceTimestamp.put(endpoint, lastUpdated.getLastUpdated()))
                 );
+    }
+    private Mono<ObjectResources> getAllResources(String endpoint) {
+        return webClient.get()
+                .uri(endpoint.concat("/"))
+                .retrieve()
+                .bodyToMono(ObjectResources.class);
     }
 
     public Mono<Object> getResource(String endpoint) {
