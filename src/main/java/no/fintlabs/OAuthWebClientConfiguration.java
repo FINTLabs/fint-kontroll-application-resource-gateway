@@ -43,7 +43,7 @@ public class OAuthWebClientConfiguration {
     }
 
     @Bean
-    @ConditionalOnProperty(name = "fint.resource-gateway.authorization.enable", havingValue = "true")
+    @ConditionalOnProperty(name = "fint.resource-gateway.authorization", havingValue = "enabled")
     public OAuth2AuthorizedClientManager authorizedClientManager(ClientRegistrationRepository clientRegistrationRepository,
                                                                  OAuth2AuthorizedClientService authorizedClientService) {
 

@@ -3,6 +3,7 @@ kind: Kustomization
 namespace: ofk-no
 resources:
   - ../../../base
+  - ../../../base/onepassword.yaml
 commonLabels:
   app.kubernetes.io/name: fint-kontroll-resource-gateway
   app.kubernetes.io/instance: fint-kontroll-resource-gateway_ofk-no
@@ -14,19 +15,18 @@ commonLabels:
 patches:
   - patch: |-
       - op: replace
-        path: "/spec/acls/0/topic"
-        value: "ofk-no.kontroll.*"
-    target:
-      kind: KafkaUserAndAcl
-      name: fint-kontroll-resource-gateway
-  - patch: |-
-      - op: replace
         path: "/spec/orgId"
         value: "ofk.no"
     target:
       kind: FintClient
       name: kontroll-resource-gw
   - patch: |-
+      - op: replace
+        path: "/spec/kafka/acls/0/topic"
+        value: "ofk-no.kontroll.*"
+      - op: replace
+        path: "/spec/kafka/acls/1/topic"
+        value: "ofk-no.kontroll.*"
       - op: replace
         path: "/spec/orgId"
         value: "ofk.no"
@@ -42,3 +42,10 @@ patches:
     target:
       kind: Application
       name: fint-kontroll-resource-gateway
+  - patch: |-
+      - op: replace
+        path: "/spec/itemPath"
+        value: "vaults/aks-api-vault/items/kontroll-app-resource-gw-ofk-no"
+    target:
+      kind: OnePasswordItem
+      name: kontroll-app-resource-gw-onepassword
