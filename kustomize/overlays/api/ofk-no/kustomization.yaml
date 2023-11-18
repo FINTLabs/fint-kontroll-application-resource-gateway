@@ -31,7 +31,7 @@ patches:
         value: "ofk.no"
       - op: replace
         path: "/spec/env/0/value"
-        value: "https://api.felleskomponent.no"
+        value: "https://vamsws.viken.no/ords/vams/expws"
       - op: replace
         path: "/spec/env/1/value"
         value: "fint"

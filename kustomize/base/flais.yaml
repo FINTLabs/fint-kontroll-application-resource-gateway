@@ -16,7 +16,7 @@ spec:
       value: 'disabled'
   envFrom:
     - secretRef:
-        name: kontroll-app-resource-gw-onepassword
+        name: kontroll-app-res-gw-onepwd
   kafka:
     enabled: true
     acls:
