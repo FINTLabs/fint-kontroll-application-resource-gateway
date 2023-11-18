@@ -46,7 +46,7 @@ spring:
       client:
         provider:
           fint-idp:
-            token-uri: https://idp.felleskomponent.no/nidp/oauth/nam/token
+            token-uri: https://login.microsoftonline.com/3d50ddd4-00a1-4ab7-9788-decf14a8728f/oauth2/v2.0/token
         registration:
           fint:
             client-secret:
