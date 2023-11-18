@@ -19,6 +19,7 @@ fint:
           - resource-reference: eiendeler.applikasjon.lisenstilgang
           - resource-reference: eiendeler.kodeverk.brukertype
           - resource-reference: eiendeler.kodeverk.lisensmodell
+          - resource-reference: eiendeler.kodeverk.applikasjonskategori
           #- resource-reference: eiendeler.kodeverk.plattform
 
     authorization: disabled #enabled
@@ -29,7 +30,6 @@ fint:
     #base-url: http://fint-kontroll-mock-service:3000
     #base-url: https://beta.felleskomponent.no
     registration-id: fint
-    scope: ''
   kafka:
     default-replicas: 1
     topic:
