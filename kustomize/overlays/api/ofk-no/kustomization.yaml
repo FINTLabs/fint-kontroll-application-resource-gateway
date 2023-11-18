@@ -47,4 +47,4 @@ patches:
         value: "vaults/aks-api-vault/items/kontroll-app-resource-gw-ofk-no"
     target:
       kind: OnePasswordItem
-      name: kontroll-app-resource-gw-onepassword
+      name: kontroll-app-res-gw-onepwd
