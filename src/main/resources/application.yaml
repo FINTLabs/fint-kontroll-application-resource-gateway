@@ -19,7 +19,7 @@ fint:
           - resource-reference: eiendeler.applikasjon.lisenstilgang
           - resource-reference: eiendeler.kodeverk.brukertype
           - resource-reference: eiendeler.kodeverk.lisensmodell
-          - resource-reference: eiendeler.kodeverk.plattform
+          #- resource-reference: eiendeler.kodeverk.plattform
 
     authorization: disabled #enabled
 
