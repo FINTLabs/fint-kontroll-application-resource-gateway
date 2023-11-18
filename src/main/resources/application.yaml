@@ -29,6 +29,7 @@ fint:
     #base-url: http://fint-kontroll-mock-service:3000
     #base-url: https://beta.felleskomponent.no
     registration-id: fint
+    scope: ''
   kafka:
     default-replicas: 1
     topic:
