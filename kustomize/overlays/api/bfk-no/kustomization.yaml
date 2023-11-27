@@ -5,7 +5,7 @@ resources:
   - ../../../base
 commonLabels:
   app.kubernetes.io/name: fint-kontroll-resource-gateway
-  app.kubernetes.io/instance: fint-kontroll-resource-gateway_afk-no
+  app.kubernetes.io/instance: fint-kontroll-resource-gateway_bfk-no
   app.kubernetes.io/version: latest
   app.kubernetes.io/component: backend
   app.kubernetes.io/part-of: fint-kontroll
@@ -22,13 +22,13 @@ patches:
   - patch: |-
       - op: replace
         path: "/spec/kafka/acls/0/topic"
-        value: "afk-no.kontroll.*"
+        value: "bfk-no.kontroll.*"
       - op: replace
         path: "/spec/kafka/acls/1/topic"
-        value: "afk-no.kontroll.*"
+        value: "bfk-no.kontroll.*"
       - op: replace
         path: "/spec/orgId"
-        value: "afk.no"
+        value: "bfk.no"
       - op: replace
         path: "/spec/env/0/value"
         value: "https://vamsws.viken.no/ords/vams/expws"
@@ -44,7 +44,7 @@ patches:
   - patch: |-
       - op: replace
         path: "/spec/itemPath"
-        value: "vaults/aks-api-vault/items/kontroll-app-resource-gw-afk-no"
+        value: "vaults/aks-api-vault/items/kontroll-app-resource-gw-bfk-no"
     target:
       kind: OnePasswordItem
       name: kontroll-app-res-gw-onepwd
