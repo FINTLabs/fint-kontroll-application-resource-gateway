@@ -14,6 +14,8 @@ spec:
       value: 'mock'
     - name: fint.resource-gateway.authorization
       value: 'disabled'
+    - name: spring.kafka.consumer.group-id
+      value: 'fint-kontroll-application-resource-gateway'
   envFrom:
     - secretRef:
         name: kontroll-app-res-gw-onepwd

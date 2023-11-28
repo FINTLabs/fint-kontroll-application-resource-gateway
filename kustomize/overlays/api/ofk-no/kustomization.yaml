@@ -4,8 +4,8 @@ namespace: ofk-no
 resources:
   - ../../../base
 commonLabels:
-  app.kubernetes.io/name: fint-kontroll-resource-gateway
-  app.kubernetes.io/instance: fint-kontroll-resource-gateway_ofk-no
+  app.kubernetes.io/name: fint-kontroll-application-resource-gateway
+  app.kubernetes.io/instance: fint-kontroll-application-resource-gateway_ofk-no
   app.kubernetes.io/version: latest
   app.kubernetes.io/component: backend
   app.kubernetes.io/part-of: fint-kontroll

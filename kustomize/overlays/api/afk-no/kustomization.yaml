@@ -4,8 +4,8 @@ namespace: afk-no
 resources:
   - ../../../base
 commonLabels:
-  app.kubernetes.io/name: fint-kontroll-resource-gateway
-  app.kubernetes.io/instance: fint-kontroll-resource-gateway_afk-no
+  app.kubernetes.io/name: fint-kontroll-application-resource-gateway
+  app.kubernetes.io/instance: fint-kontroll-application-resource-gateway_afk-no
   app.kubernetes.io/version: latest
   app.kubernetes.io/component: backend
   app.kubernetes.io/part-of: fint-kontroll
@@ -38,6 +38,9 @@ patches:
       - op: replace
         path: "/spec/env/2/value"
         value: "enabled"
+      - op: replace
+        path: "/spec/env/3/value"
+        value: "afk-no-fint-kontroll-application-resource-gateway"
     target:
       kind: Application
       name: fint-kontroll-application-resource-gateway

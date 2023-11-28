@@ -1,5 +1,5 @@
 fint:
-  application-id: fint-resource-gateway
+  application-id: fint-kontroll-application-resource-gateway
   org-id: fintlabs.no
   kontroll:
     datainput: mock #fint
