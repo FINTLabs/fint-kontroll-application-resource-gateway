@@ -1,0 +1,53 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: fridiks-no
+resources:
+  - ../../../base
+commonLabels:
+  app.kubernetes.io/name: fint-kontroll-application-resource-gateway
+  app.kubernetes.io/instance: fint-kontroll-application-resource-gateway_fridiks-no
+  app.kubernetes.io/version: latest
+  app.kubernetes.io/component: backend
+  app.kubernetes.io/part-of: fint-kontroll
+  fintlabs.no/team: bas
+  fintlabs.no/org-id: fridiks.no
+patches:
+  - patch: |-
+      - op: replace
+        path: "/spec/orgId"
+        value: "fridiks.no"
+    target:
+      kind: FintClient
+      name: kontroll-resource-gw
+  - patch: |-
+      - op: replace
+        path: "/spec/kafka/acls/0/topic"
+        value: "fridiks-no.kontroll.*"
+      - op: replace
+        path: "/spec/kafka/acls/1/topic"
+        value: "fridiks-no.kontroll.*"
+      - op: replace
+        path: "/spec/orgId"
+        value: "fridiks.no"
+      - op: replace
+        path: "/spec/env/0/value"
+        value: "https://vamsws.viken.no/ords/vams/expws"
+      - op: replace
+        path: "/spec/env/1/value"
+        value: "fint"
+      - op: replace
+        path: "/spec/env/2/value"
+        value: "enabled"
+      - op: replace
+        path: "/spec/env/3/value"
+        value: "fridiks-no-fint-kontroll-application-resource-gateway"
+    target:
+      kind: Application
+      name: fint-kontroll-application-resource-gateway
+  - patch: |-
+      - op: replace
+        path: "/spec/itemPath"
+        value: "vaults/aks-api-vault/items/kontroll-app-resource-gw-frid-iks-no"
+    target:
+      kind: OnePasswordItem
+      name: kontroll-app-res-gw-onepwd
