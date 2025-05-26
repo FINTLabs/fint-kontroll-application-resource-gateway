@@ -78,6 +78,12 @@ public class EntityPublishingComponent {
 
     private void pullUpdatedEntityResources(EntityPipeline entityPipeline) {
         List<HashMap<String, Object>> resources = getUpdatedResources(entityPipeline.getFintEndpoint());
+
+        if(resources.isEmpty()) {
+            log.warn("No updated resources found on endpoint {}", entityPipeline.getFintEndpoint());
+            return;
+        }
+
         for (HashMap<String, Object> resource : resources) {
             String key = getKey(resource, entityPipeline.getSelfLinkKeyFilter());
             entityProducer.send(
