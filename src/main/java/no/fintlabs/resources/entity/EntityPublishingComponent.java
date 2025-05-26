@@ -77,6 +77,8 @@ public class EntityPublishingComponent {
     }
 
     private void pullUpdatedEntityResources(EntityPipeline entityPipeline) {
+        log.info("Pulling updated resources from endpoint: {}", entityPipeline.getFintEndpoint());
+
         List<HashMap<String, Object>> resources = getUpdatedResources(entityPipeline.getFintEndpoint());
 
         if(resources.isEmpty()) {
@@ -114,6 +116,9 @@ public class EntityPublishingComponent {
                 log.error("Could not pull entities from endpoint=" + endpointUrl, ex2);
                 return Collections.emptyList();
             }
+        } catch (Exception e) {
+            log.error("Unexpected error while pulling entities from endpoint=" + endpointUrl, e);
+            return Collections.emptyList();
         }
     }
 
