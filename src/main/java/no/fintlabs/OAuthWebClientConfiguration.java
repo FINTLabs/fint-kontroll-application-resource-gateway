@@ -27,6 +27,7 @@ import java.util.function.Function;
 @Setter
 @Configuration
 @ConfigurationProperties(prefix = "fint.client")
+@ConditionalOnProperty(name= "fint.kontroll.datainput", havingValue = "fint")
 public class OAuthWebClientConfiguration {
 
     private String baseUrl;
@@ -76,17 +77,10 @@ public class OAuthWebClientConfiguration {
     public ClientHttpConnector clientHttpConnector() {
         return new ReactorClientHttpConnector(HttpClient.create(
                         ConnectionProvider.newConnection()
-//                                .builder("laidback")
-//                                .maxLifeTime(Duration.ofMinutes(30))
-//                                //.maxIdleTime(Duration.ofMinutes(5))
-//                                .maxIdleTime(Duration.ofSeconds(10))
-//                                //.pendingAcquireTimeout(Duration.ofMinutes(5))
-//                                .build()
                 )
                 .wiretap(true)
                 .followRedirect(true)
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 300000)
-                //.option(ChannelOption.SO_KEEPALIVE, true)
                 .responseTimeout(Duration.ofMinutes(5))
         );
     }
@@ -110,10 +104,6 @@ public class OAuthWebClientConfiguration {
                 .baseUrl(baseUrl)
                 .defaultHeader("ApiToken", apiToken)
                 .defaultHeader("CountyCode", countyCode )
-//                .filters(exchangeFilterFunctions -> {
-//                    exchangeFilterFunctions.add(LogFilters.logRequest());
-//                    exchangeFilterFunctions.add(LogFilters.logResponse());
-//                })
                 .build();
     }
 

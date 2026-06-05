@@ -41,6 +41,9 @@ patches:
       - op: replace
         path: "/spec/env/3/value"
         value: "bfk-no-fint-kontroll-application-resource-gateway"
+      - op: replace
+        path: "/spec/env/4/value"
+        value: "bfk-no"
     target:
       kind: Application
       name: fint-kontroll-application-resource-gateway

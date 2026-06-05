@@ -30,12 +30,14 @@ fint:
     #base-url: http://fint-kontroll-mock-service:3000
     #base-url: https://beta.felleskomponent.no
     registration-id: fint
+novari:
   kafka:
     default-replicas: 1
     topic:
-      org-id: ${fint.org-id}
+      org-id: fintlabs-no
       domain-context: kontroll
     application-id: ${fint.application-id}
+
 logging:
   level:
     root: INFO
