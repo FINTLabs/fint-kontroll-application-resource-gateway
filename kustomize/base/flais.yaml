@@ -16,6 +16,8 @@ spec:
       value: 'disabled'
     - name: spring.kafka.consumer.group-id
       value: 'fint-kontroll-application-resource-gateway'
+    - name: novari.kafka.topic.org-id
+      value: "No 4 - orgid with - and not ."
   envFrom:
     - secretRef:
         name: kontroll-app-res-gw-onepwd

@@ -2,8 +2,7 @@ package no.fintlabs.resources.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import no.fintlabs.kafka.entity.topic.EntityTopicNameParameters;
-
+import no.novari.kafka.topic.name.EntityTopicNameParameters;
 @Getter
 @AllArgsConstructor
 public class EntityPipeline {
